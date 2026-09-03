@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>PopKada — Tell Us How We Did</title>
+<meta name="description" content="Scan-and-go feedback for PopKada. Rate your visit and tell us what you loved.">
+
+<!-- Baloo 2 = bubbly display face for the food-stall brand voice, Poppins = clean body/UI face -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="page-landing">
+
+  <!-- Ambient background: soft drifting blobs in red & yellow, sits behind everything -->
+  <div class="blob-field" aria-hidden="true">
+    <span class="blob blob--a"></span>
+    <span class="blob blob--b"></span>
+    <span class="blob blob--c"></span>
+    <span class="blob blob--d"></span>
+  </div>
+
+  <!-- ============ STAGE ============
+       One full-height "stage" that choreographs three phases:
+       1. .stage--intro   logo alone, centered, scales/pulses in
+       2. .stage--form    logo shrinks to a header strip, feedback card springs up
+       3. .stage--sent    card morphs into a paper plane and flies off, then confetti + thanks
+  -->
+  <main class="stage" id="stage" data-phase="intro">
+
+    <!-- Compact header the logo animates INTO for phase 2 -->
+    <header class="brand-bar" id="brandBar">
+      <img class="brand-bar__logo" src="popkada-logo.png" alt="PopKada logo">
+      <span class="brand-bar__tag">Your go-to barkada bites.</span>
+    </header>
+
+    <!-- Phase 1: the big intro logo. Same image, different box — see #logoIntro CSS -->
+    <div class="logo-intro" id="logoIntro">
+      <div class="logo-intro__glow" aria-hidden="true"></div>
+      <img class="logo-intro__img" src="popkada-logo.png" alt="PopKada">
+    </div>
+
+    <!-- Phase 2: the feedback card -->
+    <section class="card feedback-card" id="feedbackCard" aria-live="polite">
+
+      <div class="feedback-card__face" id="feedbackFace">
+        <h1 class="feedback-card__heading">How was your visit at PopKada?</h1>
+        <p class="feedback-card__sub">Scan. Tap. Tell us. Takes 10 seconds.</p>
+
+        <!-- Star rating -->
+        <div class="star-rating" id="starRating" role="radiogroup" aria-label="Rate your experience, 1 to 5 stars">
+          <button type="button" class="star" data-value="1" role="radio" aria-checked="false" aria-label="1 star">★</button>
+          <button type="button" class="star" data-value="2" role="radio" aria-checked="false" aria-label="2 stars">★</button>
+          <button type="button" class="star" data-value="3" role="radio" aria-checked="false" aria-label="3 stars">★</button>
+          <button type="button" class="star" data-value="4" role="radio" aria-checked="false" aria-label="4 stars">★</button>
+          <button type="button" class="star" data-value="5" role="radio" aria-checked="false" aria-label="5 stars">★</button>
+        </div>
+
+        <form id="feedbackForm" novalidate>
+          <label class="visually-hidden" for="feedbackText">Your feedback</label>
+          <textarea
+            id="feedbackText"
+            name="feedbackText"
+            rows="3"
+            placeholder="Tell us what you loved or what we can improve..."
+            maxlength="500"></textarea>
+
+          <p class="form-error" id="formError" role="alert" hidden>Give us a star rating or a quick note first 🙂</p>
+
+          <button type="submit" class="btn btn--primary" id="submitBtn">
+            <span class="btn__label">Send Feedback</span>
+            <!-- swapped for the plane silhouette right before flight -->
+            <svg class="btn__plane" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- The card content that gets swapped in once it "arrives" -->
+      <div class="feedback-card__face feedback-card__face--thanks" id="thanksFace" hidden>
+        <div class="checkmark" aria-hidden="true">
+          <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path fill="none" d="M14 27l7 7 16-16"/></svg>
+        </div>
+        <h1 class="feedback-card__heading">Salamat, barkada! 🎉</h1>
+        <p class="feedback-card__sub">Thanks for helping PopKada get better.</p>
+        <button type="button" class="btn btn--ghost" id="resetBtn">Send another response</button>
+      </div>
+
+    </section>
+
+    <!-- Confetti burst container, populated by JS only at send-time -->
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
